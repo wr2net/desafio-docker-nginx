@@ -1,10 +1,27 @@
 version: '3'
 
 services:
-  db_wr2net:
+
+  app:
+    build:
+      context: node
+    container_name: app
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
+    command: node index.js
+    networks:
+      - wr2_network
+    volumes:
+      - ./node:/usr/src/app
+    tty: true
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+  db:
     image: mysql:5.7
     command: --innodb-use-native-aio=0
-    container_name: db_wr2net
+    container_name: db
     restart: always
     tty: true
     volumes: 
@@ -15,31 +32,20 @@ services:
     networks:
       - wr2_network
 
-  app_wr2net:
+  nginx:
     build:
-      context: node
-    container_name: app_wr2net
-    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
-    networks:
-      - wr2_network
-    volumes:
-      - ./node:/usr/src/app
-    tty: true
-    ports:
-      - "3000:3000"
-    depends_on:
-      - db_wr2net
-
-  nginx_wr2net:
-    build:
-        context: ./nginx
-        dockerfile: Dockerfile.prod
-    image: wr2net/nginx:latest
-    container_name: nginx_wr2net
+      context: ./nginx
+    image: nginx
+    container_name: nginx
     networks:
       - wr2_network
     ports:
       - "8080:80"
+    depends_on:
+      - app
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/node.template
+    command: 'bash -c "cat /etc/nginx/conf.d/node.template > /etc/nginx/conf.d/default.conf && nginx -g ''daemon off;''"'
 
 networks:
   wr2_network:

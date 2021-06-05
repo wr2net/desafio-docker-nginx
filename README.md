@@ -15,17 +15,12 @@ Suba tudo em um repositório e faça a entrega.
 
 ### Run Docker Compose
 
-`$ docker-compose up -d`
-
-#### Run by Shell Script
-`$ sh run.sh`
+`$ docker-compose up -d` or `$ sh start.sh` 
 
 ### Stop Docker Compose
-`$ docker-compose down`
-
-#### Stop by Shell Script
-`$ sh stop.sh`
+`$ docker-compose down` or `$ sh stop.sh`
 
 ### View page in your favorite browser
 
-[http://localhost:8080](http://localhost:8080)
+* List: [http://localhost:8080](http://localhost:8080)
+* Insert: [http://localhost:8080/insert/YourName](http://localhost:8080/insert/YourName)

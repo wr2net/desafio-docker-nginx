@@ -1,11 +1,5 @@
-FROM nginx:latest
+FROM nginx
 
-WORKDIR /app
+COPY nginx.conf /etc/nginx/conf.d/
 
-RUN apt-get update && \
-	apt-get install nano -y
-	
-COPY html/ /usr/share/nginx/html
-
-ENTRYPOINT [ "/docker-entrypoint.sh" ]
-CMD [ "nginx", "-g", "daemon off;" ]
+EXPOSE 8080
