@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+
 const envi = require('dotenv').config()
 const port = envi.env.DB_PORT
 const config = {
@@ -12,16 +13,16 @@ const config = {
 const mysql = require('mysql')
 const connection = mysql.createConnection(config)
 
-const sql = `CREATE TABLE people(id int NOT NULL auto_increment, name varchar(255), PRIMARY KEY(id));`
-connection.query(sql)
+const create = `CREATE TABLE people(id int NOT NULL auto_increment, name varchar(255), PRIMARY KEY(id));`
+connection.query(create)
 
-const sql = `INSERT INTO people(name) VALUES ('Wagner')`
-connection.query(sql)
+const insert = `INSERT INTO people(name) VALUES ('Wagner')`
+connection.query(insert)
 
 connection.end
 
 app.get('/', (req, res) => {
-    res.send('<h1>Full Cycle XPTO Rocks!</h1>')
+    res.send('<h1>Full Cycle Rocks!</h1>')
 })
 
 app.listen(port, () => {
