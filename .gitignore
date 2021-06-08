@@ -87,4 +87,4 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
-mysql/*
+node/node_modules/*
